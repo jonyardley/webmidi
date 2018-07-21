@@ -5,6 +5,20 @@ import Layout from "../layout";
 
 initReactFastClick();
 
+const buttonStyles = {
+  width: "32%",
+  background: "#CCC",
+  padding: "80px 0",
+  textAlign: "center",
+  display: "inline-block",
+  border: "2px solid #FFF",
+  "user-select": "none",
+  "-moz-user-select": "none",
+  "-khtml-user-select": "none",
+  "-webkit-user-select": "none",
+  "-o-user-select": "none"
+};
+
 class Index extends Component {
   constructor(props) {
     super(props);
@@ -55,30 +69,30 @@ class Index extends Component {
         <h2>{instrument.name}</h2>
         {composer &&
           !ready && (
-            <button
-              style={{ width: "32%", height: 100 }}
-              onMouseDown={() =>
+            <div
+              style={buttonStyles}
+              onPointerDown={() =>
                 this.playNote(instrument.tune, instrument.channel)
               }
-              onMouseUp={() =>
+              onPointerUp={() =>
                 this.stopNote(instrument.tune, instrument.channel)
               }
               key={instrument.tune}
             >
               Tune up ({instrument.tune})
-            </button>
+            </div>
           )}
         {ready && (
           <div syles={{ width: "100%" }}>
             {notes.map(note => (
-              <button
-                style={{ width: "32%", height: 100 }}
-                onMouseDown={() => this.playNote(note, instrument.channel)}
-                onMouseUp={() => this.stopNote(note, instrument.channel)}
+              <div
+                style={buttonStyles}
+                onPointerDown={() => this.playNote(note, instrument.channel)}
+                onPointerUp={() => this.stopNote(note, instrument.channel)}
                 key={note}
               >
                 {note}
-              </button>
+              </div>
             ))}
           </div>
         )}
