@@ -1,5 +1,6 @@
 import { Component } from "react";
 import WebMidi from "webmidi";
+import Layout from "../layout";
 
 class Demo1 extends Component {
   componentDidMount() {
@@ -12,7 +13,11 @@ class Demo1 extends Component {
     });
   }
   render() {
-    return <h1>Demo 1</h1>;
+    return (
+      <Layout>
+        <h1>Demo 1</h1>
+      </Layout>
+    );
   }
 }
 

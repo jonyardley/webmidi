@@ -1,6 +1,7 @@
 import { Component } from "react";
 import io from "socket.io-client";
 import WebMidi from "webmidi";
+import Layout from "../layout";
 
 class Index extends Component {
   componentDidMount() {
@@ -15,9 +16,9 @@ class Index extends Component {
 
   render() {
     return (
-      <div>
+      <Layout>
         <h1>Red Badger Symphony</h1>
-      </div>
+      </Layout>
     );
   }
 }

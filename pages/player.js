@@ -1,6 +1,7 @@
 import { Component } from "react";
 import io from "socket.io-client";
 import initReactFastClick from "react-fastclick";
+import Layout from "../layout";
 
 initReactFastClick();
 
@@ -45,7 +46,7 @@ class Index extends Component {
 
   render() {
     return (
-      <div>
+      <Layout>
         <h1>{this.state.hello}</h1>
         {this.state.notes &&
           this.state.notes.map(note => (
@@ -56,7 +57,7 @@ class Index extends Component {
               {note}
             </button>
           ))}
-      </div>
+      </Layout>
     );
   }
 }
