@@ -7,6 +7,7 @@ export default ({ children, title = "WebMidi Talk" }) => (
       <title>{title}</title>
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      <script src="/static/processing.min.js" />
     </Head>
     {children}
   </div>
