@@ -1,6 +1,6 @@
 import { Component } from "react";
 import _ from "underscore";
-import Layout from "../layout";
+import FullScreenLayout from "../fullScreenLayout";
 import WebMidi from "webmidi";
 import draw from "../lib/draw";
 
@@ -56,10 +56,9 @@ class Particles extends Component {
 
   render() {
     return (
-      <Layout>
-        <h1>Particles Example</h1>
+      <FullScreenLayout>
         <canvas ref={el => (this.canvas = el)} />
-      </Layout>
+      </FullScreenLayout>
     );
   }
 }

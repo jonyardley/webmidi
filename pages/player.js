@@ -3,24 +3,21 @@ import io from "socket.io-client";
 import initReactFastClick from "react-fastclick";
 import Layout from "../layout";
 
-initReactFastClick();
+import instruments from "../lib/instruments";
 
-const octaves = [2, 3, 4, 5];
-const accidentals = ["", "#", "b"];
-const notes = ["A", "B", "C", "D", "F", "G"];
-const channels = [1, 2, 3];
+console.log(instruments);
+
+initReactFastClick();
 
 const randomItem = collection =>
   collection[Math.floor(Math.random() * collection.length)];
-
-const generateRandomNote = () =>
-  `${randomItem(notes)}${randomItem(accidentals)}${randomItem(octaves)}`;
 
 class Index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hello: ""
+      composer: "",
+      instrument: randomItem(instruments)
     };
   }
 
@@ -28,47 +25,42 @@ class Index extends Component {
     this.socket = io();
     this.socket.on("composerName", data => {
       this.setState({
-        hello: data.message,
-        channel: randomItem(channels),
-        notes: [
-          generateRandomNote(),
-          generateRandomNote(),
-          generateRandomNote(),
-          generateRandomNote(),
-          generateRandomNote()
-        ]
+        composer: data.message
       });
     });
   }
 
-  playNote = note => {
+  playNote = (note, channel) => {
     this.socket.emit("playNote", {
-      channel: this.state.channel,
+      channel: channel,
       note
     });
   };
 
-  stopNote = note => {
+  stopNote = (note, channel) => {
     this.socket.emit("stopNote", {
-      channel: this.state.channel,
+      channel: channel,
       note
     });
   };
 
   render() {
+    const { instrument, composer } = this.state;
+    const notes = instrument.notes.sort(() => 0.5 - Math.random()).slice(0, 9);
     return (
       <Layout>
-        <h1>{this.state.hello}</h1>
-        {this.state.notes &&
-          this.state.notes.map(note => (
-            <button
-              style={{ width: 60, height: 100, margin: 20 }}
-              onMouseDown={() => this.playNote(note)}
-              onMouseUp={() => this.stopNote(note)}
-            >
-              {note}
-            </button>
-          ))}
+        <h1>{composer}</h1>
+        <h2>{instrument.name}</h2>
+        {notes.map(note => (
+          <button
+            style={{ width: 60, height: 100, margin: 20 }}
+            onMouseDown={() => this.playNote(note, instrument.channel)}
+            onMouseUp={() => this.stopNote(note, instrument.channel)}
+            key={note}
+          >
+            {note}
+          </button>
+        ))}
       </Layout>
     );
   }
