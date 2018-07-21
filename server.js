@@ -5,6 +5,7 @@ const next = require("next");
 const composers = require("./composers");
 
 const dev = process.env.NODE_ENV !== "production";
+const PORT = process.env.PORT || 3000;
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
@@ -27,8 +28,8 @@ nextApp.prepare().then(() => {
     return nextHandler(req, res);
   });
 
-  server.listen(3000, err => {
+  server.listen(PORT, err => {
     if (err) throw err;
-    console.log("> Ready on http://localhost:3000");
+    console.log(`> Ready on http://localhost:${PORT}`);
   });
 });
