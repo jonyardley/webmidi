@@ -9,12 +9,15 @@ const PORT = process.env.PORT || 3000;
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
+let orchestraReady = false;
+
 io.on("connection", socket => {
   console.log("Time to tune up!");
 
   const composer = composers[Math.floor(Math.random() * composers.length)];
   socket.emit("composerName", {
-    message: composer
+    message: composer,
+    ready: orchestraReady
   });
 
   socket.on("playNote", note => {
@@ -25,6 +28,11 @@ io.on("connection", socket => {
   socket.on("stopNote", note => {
     console.log("stopNote", note);
     io.emit("stopNote", note);
+  });
+
+  socket.on("ready", ready => {
+    orchestraReady = ready;
+    io.emit("ready", orchestraReady);
   });
 });
 

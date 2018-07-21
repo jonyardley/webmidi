@@ -5,8 +5,6 @@ import Layout from "../layout";
 
 import instruments from "../lib/instruments";
 
-console.log(instruments);
-
 initReactFastClick();
 
 const randomItem = collection =>
@@ -15,9 +13,11 @@ const randomItem = collection =>
 class Index extends Component {
   constructor(props) {
     super(props);
+    const instrument = randomItem(instruments);
     this.state = {
       composer: "",
-      instrument: randomItem(instruments)
+      instrument,
+      notes: instrument.notes.sort(() => 0.5 - Math.random()).slice(0, 9)
     };
   }
 
@@ -25,8 +25,12 @@ class Index extends Component {
     this.socket = io();
     this.socket.on("composerName", data => {
       this.setState({
-        composer: data.message
+        composer: data.message,
+        ready: data.ready
       });
+    });
+    this.socket.on("ready", ready => {
+      this.setState({ ready });
     });
   }
 
@@ -45,24 +49,37 @@ class Index extends Component {
   };
 
   render() {
-    const { instrument, composer } = this.state;
-    const notes = instrument.notes.sort(() => 0.5 - Math.random()).slice(0, 9);
+    const { instrument, composer, ready, notes } = this.state;
     return (
       <Layout>
         <h1>{composer}</h1>
         <h2>{instrument.name}</h2>
-        <div syles={{ width: "100%" }}>
-          {notes.map(note => (
-            <button
-              style={{ width: "32%", height: 100 }}
-              onMouseDown={() => this.playNote(note, instrument.channel)}
-              onMouseUp={() => this.stopNote(note, instrument.channel)}
-              key={note}
-            >
-              {note}
-            </button>
-          ))}
-        </div>
+        {!ready && (
+          <button
+            style={{ width: "32%", height: 100 }}
+            onMouseDown={() =>
+              this.playNote(instrument.tune, instrument.channel)
+            }
+            onMouseUp={() => this.stopNote(instrument.tune, instrument.channel)}
+            key={instrument.tune}
+          >
+            Tune up ({instrument.tune})
+          </button>
+        )}
+        {ready && (
+          <div syles={{ width: "100%" }}>
+            {notes.map(note => (
+              <button
+                style={{ width: "32%", height: 100 }}
+                onMouseDown={() => this.playNote(note, instrument.channel)}
+                onMouseUp={() => this.stopNote(note, instrument.channel)}
+                key={note}
+              >
+                {note}
+              </button>
+            ))}
+          </div>
+        )}
       </Layout>
     );
   }

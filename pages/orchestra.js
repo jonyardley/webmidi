@@ -8,19 +8,32 @@ class Index extends Component {
     WebMidi.enable(() => {
       this.output = WebMidi.outputs[0];
     });
+
     this.socket = io();
+
     this.socket.on("playNote", ({ note, channel }) => {
       this.output.playNote(note, channel);
     });
+
     this.socket.on("stopNote", ({ note, channel }) => {
       this.output.stopNote(note, channel);
     });
   }
 
+  orchestraReady = ready => {
+    this.socket.emit("ready", ready);
+  };
+
   render() {
     return (
       <Layout>
         <h1>Red Badger Symphony</h1>
+        <button onClick={() => this.orchestraReady(true)}>
+          Orchestra Ready
+        </button>
+        <button onClick={() => this.orchestraReady(false)}>
+          Tune Orchestra
+        </button>
       </Layout>
     );
   }
