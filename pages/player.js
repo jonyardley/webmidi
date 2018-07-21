@@ -51,7 +51,7 @@ class Index extends Component {
           this.state.notes.map(note => (
             <button
               style={{ width: 60, height: 100, margin: 20 }}
-              onMouseDown={() => this.playNote(note)}
+              onClick={() => this.playNote(note)}
             >
               {note}
             </button>
