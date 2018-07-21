@@ -8,7 +8,7 @@ initReactFastClick();
 const buttonStyles = {
   width: "32%",
   background: "#CCC",
-  padding: "80px 0",
+  padding: "40px 0",
   textAlign: "center",
   display: "inline-block",
   border: "2px solid #FFF",
@@ -87,8 +87,10 @@ class Index extends Component {
             {notes.map(note => (
               <div
                 style={buttonStyles}
-                onPointerDown={() => this.playNote(note, instrument.channel)}
-                onPointerUp={() => this.stopNote(note, instrument.channel)}
+                onTouchStart={() => this.playNote(note, instrument.channel)}
+                onMouseDown={() => this.playNote(note, instrument.channel)}
+                onTouchEnd={() => this.stopNote(note, instrument.channel)}
+                onMouseUp={() => this.stopNote(note, instrument.channel)}
                 key={note}
               >
                 {note}
