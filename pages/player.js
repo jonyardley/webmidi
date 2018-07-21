@@ -5,9 +5,10 @@ import Layout from "../layout";
 
 initReactFastClick();
 
-const octaves = [0, 1, 2, 3, 4, 5, 6, 7];
+const octaves = [2, 3, 4, 5];
 const accidentals = ["", "#", "b"];
 const notes = ["A", "B", "C", "D", "F", "G"];
+const channels = [1, 2, 3];
 
 const randomItem = collection =>
   collection[Math.floor(Math.random() * collection.length)];
@@ -28,6 +29,7 @@ class Index extends Component {
     this.socket.on("composerName", data => {
       this.setState({
         hello: data.message,
+        channel: randomItem(channels),
         notes: [
           generateRandomNote(),
           generateRandomNote(),
@@ -40,8 +42,17 @@ class Index extends Component {
   }
 
   playNote = note => {
-    this.socket.emit("note", note);
-    console.log("emitted", note);
+    this.socket.emit("playNote", {
+      channel: this.state.channel,
+      note
+    });
+  };
+
+  stopNote = note => {
+    this.socket.emit("stopNote", {
+      channel: this.state.channel,
+      note
+    });
   };
 
   render() {
@@ -52,7 +63,8 @@ class Index extends Component {
           this.state.notes.map(note => (
             <button
               style={{ width: 60, height: 100, margin: 20 }}
-              onClick={() => this.playNote(note)}
+              onMouseDown={() => this.playNote(note)}
+              onMouseUp={() => this.stopNote(note)}
             >
               {note}
             </button>

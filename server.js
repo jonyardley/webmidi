@@ -17,9 +17,14 @@ io.on("connection", socket => {
     message: composer
   });
 
-  socket.on("note", function(note) {
-    console.log("play", note);
-    io.emit("note", note);
+  socket.on("playNote", note => {
+    console.log("playNote", note);
+    io.emit("playNote", note);
+  });
+
+  socket.on("stopNote", note => {
+    console.log("stopNote", note);
+    io.emit("stopNote", note);
   });
 });
 

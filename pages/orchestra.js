@@ -9,8 +9,11 @@ class Index extends Component {
       this.output = WebMidi.outputs[0];
     });
     this.socket = io();
-    this.socket.on("note", note => {
-      this.output.playNote(note, 1, { duration: 100 });
+    this.socket.on("playNote", ({ note, channel }) => {
+      this.output.playNote(note, channel);
+    });
+    this.socket.on("stopNote", ({ note, channel }) => {
+      this.output.stopNote(note, channel);
     });
   }
 
