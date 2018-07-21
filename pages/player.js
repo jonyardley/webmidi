@@ -3,30 +3,29 @@ import io from "socket.io-client";
 import initReactFastClick from "react-fastclick";
 import Layout from "../layout";
 
-import instruments from "../lib/instruments";
-
 initReactFastClick();
-
-const randomItem = collection =>
-  collection[Math.floor(Math.random() * collection.length)];
 
 class Index extends Component {
   constructor(props) {
     super(props);
-    const instrument = randomItem(instruments);
     this.state = {
       composer: "",
-      instrument,
-      notes: instrument.notes.sort(() => 0.5 - Math.random()).slice(0, 9)
+      ready: false,
+      instrument: {
+        name: ""
+      },
+      notes: []
     };
   }
 
   componentDidMount() {
     this.socket = io();
-    this.socket.on("composerName", data => {
+    this.socket.on("composerName", ({ composer, instrument, ready, notes }) => {
       this.setState({
-        composer: data.message,
-        ready: data.ready
+        composer,
+        instrument,
+        ready,
+        notes
       });
     });
     this.socket.on("ready", ready => {
@@ -54,18 +53,21 @@ class Index extends Component {
       <Layout>
         <h1>{composer}</h1>
         <h2>{instrument.name}</h2>
-        {!ready && (
-          <button
-            style={{ width: "32%", height: 100 }}
-            onMouseDown={() =>
-              this.playNote(instrument.tune, instrument.channel)
-            }
-            onMouseUp={() => this.stopNote(instrument.tune, instrument.channel)}
-            key={instrument.tune}
-          >
-            Tune up ({instrument.tune})
-          </button>
-        )}
+        {composer &&
+          !ready && (
+            <button
+              style={{ width: "32%", height: 100 }}
+              onMouseDown={() =>
+                this.playNote(instrument.tune, instrument.channel)
+              }
+              onMouseUp={() =>
+                this.stopNote(instrument.tune, instrument.channel)
+              }
+              key={instrument.tune}
+            >
+              Tune up ({instrument.tune})
+            </button>
+          )}
         {ready && (
           <div syles={{ width: "100%" }}>
             {notes.map(note => (
