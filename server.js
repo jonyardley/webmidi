@@ -13,16 +13,27 @@ const nextHandler = nextApp.getRequestHandler();
 const randomItem = collection =>
   collection[Math.floor(Math.random() * collection.length)];
 
+const players = {};
 let orchestraReady = false;
 
 io.on("connection", socket => {
   const composer = composers[Math.floor(Math.random() * composers.length)];
   const instrument = randomItem(instruments);
-  socket.emit("composerName", {
+
+  players[socket.id] = `${composer} - ${instrument.name}`;
+
+  socket.emit("playerReady", {
     composer: composer,
     ready: orchestraReady,
     instrument,
     notes: instrument.notes.sort(() => 0.5 - Math.random()).slice(0, 9)
+  });
+
+  io.emit("players", players);
+
+  socket.on("disconnect", () => {
+    players[socket.id] = undefined;
+    io.emit("players", players);
   });
 
   socket.on("playNote", note => {

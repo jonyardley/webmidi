@@ -20,7 +20,7 @@ class Index extends Component {
 
   componentDidMount() {
     this.socket = io();
-    this.socket.on("composerName", ({ composer, instrument, ready, notes }) => {
+    this.socket.on("playerReady", ({ composer, instrument, ready, notes }) => {
       this.setState({
         composer,
         instrument,
