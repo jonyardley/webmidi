@@ -51,16 +51,18 @@ class Index extends Component {
       <Layout>
         <h1>{composer}</h1>
         <h2>{instrument.name}</h2>
-        {notes.map(note => (
-          <button
-            style={{ width: 60, height: 100, margin: 20 }}
-            onMouseDown={() => this.playNote(note, instrument.channel)}
-            onMouseUp={() => this.stopNote(note, instrument.channel)}
-            key={note}
-          >
-            {note}
-          </button>
-        ))}
+        <div syles={{ width: "100%" }}>
+          {notes.map(note => (
+            <button
+              style={{ width: "32%", height: 100 }}
+              onMouseDown={() => this.playNote(note, instrument.channel)}
+              onMouseUp={() => this.stopNote(note, instrument.channel)}
+              key={note}
+            >
+              {note}
+            </button>
+          ))}
+        </div>
       </Layout>
     );
   }
