@@ -1,5 +1,8 @@
 import { Component } from "react";
 import io from "socket.io-client";
+import initReactFastClick from "react-fastclick";
+
+initReactFastClick();
 
 const octaves = [0, 1, 2, 3, 4, 5, 6, 7];
 const accidentals = ["", "#", "b"];
@@ -24,21 +27,35 @@ class Index extends Component {
     this.socket.on("composerName", data => {
       this.setState({
         hello: data.message,
-        note: generateRandomNote()
+        notes: [
+          generateRandomNote(),
+          generateRandomNote(),
+          generateRandomNote(),
+          generateRandomNote(),
+          generateRandomNote()
+        ]
       });
     });
   }
 
-  playNote = () => {
-    this.socket.emit("note", this.state.note);
-    console.log("emitted", this.state.note);
+  playNote = note => {
+    this.socket.emit("note", note);
+    console.log("emitted", note);
   };
 
   render() {
     return (
       <div>
         <h1>{this.state.hello}</h1>
-        <button onClick={this.playNote}>{this.state.note}</button>
+        {this.state.notes &&
+          this.state.notes.map(note => (
+            <button
+              style={{ width: 60, height: 100, margin: 20 }}
+              onMouseDown={() => this.playNote(note)}
+            >
+              {note}
+            </button>
+          ))}
       </div>
     );
   }

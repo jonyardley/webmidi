@@ -17,7 +17,7 @@ io.on("connection", socket => {
   });
 
   socket.on("note", function(note) {
-    console.log(note);
+    console.log("play", note);
     io.emit("note", note);
   });
 });
