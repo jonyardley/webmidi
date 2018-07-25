@@ -27,8 +27,7 @@ class Particles extends Component {
   componentDidMount() {
     this.ctx = this.canvas.getContext("2d");
     WebMidi.enable(() => {
-      console.log(WebMidi.inputs);
-      this.input = WebMidi.inputs[0];
+      this.input = WebMidi.inputs[1];
       this.input.addListener("noteon", "all", this.handleEvent);
       this.input.addListener("noteoff", "all", this.handleEvent);
       new Processing(this.canvas, p => {

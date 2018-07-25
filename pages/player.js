@@ -5,20 +5,6 @@ import Layout from "../layout";
 
 initReactFastClick();
 
-const buttonStyles = {
-  width: "32%",
-  background: "#CCC",
-  padding: "40px 0",
-  textAlign: "center",
-  display: "inline-block",
-  border: "2px solid #FFF",
-  "user-select": "none",
-  "-moz-user-select": "none",
-  "-khtml-user-select": "none",
-  "-webkit-user-select": "none",
-  "-o-user-select": "none"
-};
-
 class Index extends Component {
   constructor(props) {
     super(props);
@@ -34,6 +20,7 @@ class Index extends Component {
 
   componentDidMount() {
     this.socket = io();
+
     this.socket.on("playerReady", ({ composer, instrument, ready, notes }) => {
       this.setState({
         composer,
@@ -42,6 +29,7 @@ class Index extends Component {
         notes
       });
     });
+
     this.socket.on("ready", ready => {
       this.setState({ ready });
     });
@@ -67,6 +55,7 @@ class Index extends Component {
       <Layout>
         <h1>{composer}</h1>
         <h2>{instrument.name}</h2>
+
         {composer &&
           !ready && (
             <div
@@ -82,6 +71,7 @@ class Index extends Component {
               Tune up ({instrument.tune})
             </div>
           )}
+
         {ready && (
           <div syles={{ width: "100%" }}>
             {notes.map(note => (
@@ -104,3 +94,17 @@ class Index extends Component {
 }
 
 export default Index;
+
+const buttonStyles = {
+  width: "32%",
+  background: "#CCC",
+  padding: "40px 0",
+  textAlign: "center",
+  display: "inline-block",
+  border: "2px solid #FFF",
+  "user-select": "none",
+  "-moz-user-select": "none",
+  "-khtml-user-select": "none",
+  "-webkit-user-select": "none",
+  "-o-user-select": "none"
+};
