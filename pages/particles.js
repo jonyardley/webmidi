@@ -27,9 +27,12 @@ class Particles extends Component {
   componentDidMount() {
     this.ctx = this.canvas.getContext("2d");
     WebMidi.enable(() => {
+      window.WebMidi = WebMidi;
       this.input = WebMidi.inputs[1];
+
       this.input.addListener("noteon", "all", this.handleEvent);
       this.input.addListener("noteoff", "all", this.handleEvent);
+
       new Processing(this.canvas, p => {
         const width = window.innerWidth;
         const height = window.innerHeight;
@@ -49,6 +52,7 @@ class Particles extends Component {
       data[0] !== MIDIevents.off &&
       data[0] !== MIDIevents.pedal
     ) {
+      console.log(data);
       midiController.newEvent(data);
     }
   };

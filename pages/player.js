@@ -60,10 +60,16 @@ class Index extends Component {
           !ready && (
             <div
               style={buttonStyles}
-              onPointerDown={() =>
+              onTouchStart={() =>
                 this.playNote(instrument.tune, instrument.channel)
               }
-              onPointerUp={() =>
+              onTouchEnd={() =>
+                this.stopNote(instrument.tune, instrument.channel)
+              }
+              onMouseDown={() =>
+                this.playNote(instrument.tune, instrument.channel)
+              }
+              onMouseUp={() =>
                 this.stopNote(instrument.tune, instrument.channel)
               }
               key={instrument.tune}
