@@ -19,7 +19,7 @@ class Index extends Component {
     this.socket = io();
 
     this.socket.on("playNote", ({ note, channel }) => {
-      this.output.playNote(note, channel);
+      this.output.playNote(note, channel, { velocity: 0.75 });
     });
 
     this.socket.on("stopNote", ({ note, channel }) => {
